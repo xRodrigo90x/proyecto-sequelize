@@ -1,8 +1,12 @@
 
 export const viewHomeController = (req, res) => {
-    res.render("home")
+    res.render("home", {
+        homeView: true
+    })
 }
 
 export const viewsUsuariosController = (req, res) => {
-    res.render("usuarios")
+    res.render("usuarios", {
+        usuariosViews: true
+    })
 }
