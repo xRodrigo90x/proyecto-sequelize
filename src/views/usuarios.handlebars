@@ -1,3 +1,131 @@
-<h1 class="text-center py-5">Pagina detalle usuarios
+<h1 class="text-center py-5">Pagina detalle usuarios</h1>
+
+{{#if error}}
+
+<h2 class="text-center py-2">Lo siento, no se han podido mostrar los usuarios. Intente mas tarde</h2>
+
+{{else}}
+
+{{#if usuarios}}
+<h2 class="text-center py-2">Listado de usuarios en el sistema</h2>
+
+
+
+<section class="row justify-content-center">
+    <form class="col-12 col-md-10 col-lg-8" id="formAddUsuario">
+        <label for="addNombre" class="form-label">Nombre:</label>
+        <input type="text" id="addNombre" name="nombre" class="form-control" required placeholder="Ingrese Nombre">
+        <label for="addApellido" class="form-label">Apellido:</label>
+        <input type="text" id="addApellido" name="apellido" class="form-control" required placeholder="Ingrese Apellido">
+        <label for="addEmail" class="form-label">Email:</label>
+        <input type="email" id="addEmail" name="email" class="form-control" required placeholder="Ingrese Email">
+        <button class="btn btn-primary mt-3">Crear usuario</button>
+    </form>
+
+</section>
+
+
+<table class="table tableUsuarios">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Apellido</th>
+            <th scope="col">Email</th>
+            <th scope="col">Modificar</th>
+            <th scope="col" id="deleteUsuario">Eliminar</th>
+        </tr>
+    </thead>
+    {{#each usuarios}}
+    <tbody>
+        <tr>
+            <th scope="row">{{this.id}}</th>
+            <td>{{this.nombre}}</td>
+            <td>{{this.apellido}}</td>
+            <td>{{this.email}}</td>
+            <td><button class="btn btn-warning">Modificar</button></td>
+            <td><button class="btn btn-danger" data-id="{{this.id}}">Eliminar</button></td>
+        </tr>
+
+    </tbody>
+    {{/each}}
+</table>
+
+{{else}}
+<h2 class="text-center py-2">No existen usuarios por mostrar</h2>
+{{/if}}
+
+{{/if}}
+
+
+<script>
+    let formAddUsuario = document.getElementById("formAddUsuario");
+
+//INICIO CREACION DE USUARIO
+    formAddUsuario.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        const raw = JSON.stringify({
+            "nombre": addNombre.value,
+            "apellido": addApellido.value,
+            "email": addEmail.value
+        });
+
+        const requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch("/api/v1/usuarios", requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                if (result.code == 201) {
+                    alert(`Mensaje: ${result.message}\nID nuevo usuario: ${result.data.id}`);
+                    location.reload();
+                } else {
+                    alert(result.message)
+                }
+            })
+            .catch(error => console.log('error', error));
+    });
+//FIN
+
+
+//INICIO BORAR USUARIO
+let botonesEliminar = document.querySelectorAll(".tableUsuarios .btn-danger")
+ botonesEliminar = [...botonesEliminar];
+
+botonesEliminar.forEach(boton=>{
+    boton.addEventListener("click", (event)=>{
+          let id = boton.dataset.id
+          let confirmacion = confirm("Esta seguro que deseas eliminar el registro con id:" + id)
+          
+      if(!confirmacion){
+        return false
+      }
+        const requestOptions = {
+            method: 'DELETE',
+            redirect: 'follow'
+            };
+
+            fetch("/api/v1/usuarios/"+id, requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                if(result.code == 200){
+                    alert(result.message)
+                    location.reload();
+                }else{
+                    alert(result.message)
+                }
+            })
+            .catch(error => console.log('error', error))
+     })
+  })
+//FIN
     
-</h1>
+</script>

@@ -26,7 +26,7 @@ export const addUsuario = async (req, res) => {
             email
         })
         
-        res.status(201).json({ code: 201, message: "OK", data: nuevoUsuarios })
+        res.status(201).json({ code: 201, message: "Usuario creado con exito.", data: nuevoUsuarios })
     } catch (error) {
         res.status(500).json({ code: 500, message: "Error al crear el nuevo usuario." })
     }

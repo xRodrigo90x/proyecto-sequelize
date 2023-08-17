@@ -44,7 +44,7 @@ app.get("*", (req, res) => {
 })
 
 app.all("*", (req, res) => {
-    res.status(404).send({ code: 404, message: "El recurso al que intenta acceder no exista." })
+    res.status(404).send({ code: 404, message: "El recurso al que intenta acceder no existe." })
 })
 
 
