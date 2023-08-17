@@ -34,19 +34,38 @@ export const addUsuario = async (req, res) => {
 
 
 //FILTRAR POR ID 
-export const findByID = async (req, res) => {
+export const findById = async (req, res) => {
     let id = Number(req.params.id);
     try {
         if (isNaN(id)) {
-            return res.status(400).json({ code: 400, message: "Debe ingresar un id numerico." })
+            return res
+                .status(400)
+                .json({ code: 400, message: "Debe enviar un id númerico." });
+        }
+        let usuario = await Usuarios.findByPk(id, {
+            // attributes: ["id", "nombre", "apellido", "email", "imagen"],
+            // include: [
+            //     {
+            //         model: Direccion,
+            //         as: "direccion",
+            //         attributes: { exclude: ["usuarioId"] },
+            //     },
+            // ],
+        });
+        if (!usuario) {
+            return res.status(400).json({
+                code: 400,
+                message: "No existe un usuario registrado con el id: " + id,
+            });
         }
 
-        let usuario = await Usuarios.findByPk(id, {
-            attributes: ["id", "nombre", "apellido", "email"]
-        })
-        res.json({ code: 200, message: "OK", data: usuario })
+        res.json({ code: 200, message: "ok", data: usuario });
     } catch (error) {
-        res.status(500).json({ code: 500, message: "Error al obtener usuario con id: " + id })
+        console.log("Error findById usuarios", error);
+        res.status(500).json({
+            code: 500,
+            message: "Error al obtener el usuario con id: " + id,
+        });
     }
 };
 
