@@ -1,0 +1,19 @@
+<h1 class="text-center py-3">Vista Detalle Usuario</h1>
+
+
+{{#if error}}
+    <h2 class="text-center py-3">Hemos tenido problemas para mostrar el contenido</h2>
+
+{{else}}
+
+
+    {{#if usuario}}
+        <p>Nombre: {{usuario.nombre}}</p>
+        <p>Apellido: {{usuario.apellido}}</p>
+        <p>Email: {{usuario.email}}</p>
+    {{else}}
+
+    <h2>No se ha encontrado informacion del usuario</h2>
+
+    {{/if}}
+{{/if}}

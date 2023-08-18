@@ -32,6 +32,7 @@
             <th scope="col">Nombre</th>
             <th scope="col">Apellido</th>
             <th scope="col">Email</th>
+            <th scope="col">Detalles</th>
             <th scope="col">Modificar</th>
             <th scope="col" id="deleteUsuario">Eliminar</th>
         </tr>
@@ -43,6 +44,7 @@
             <td>{{this.nombre}}</td>
             <td>{{this.apellido}}</td>
             <td>{{this.email}}</td>
+            <td><a href="/detalles/usuario/{{this.id}}" class="btn btn-info">Ver Detalle</a></td>
             <td><button class="btn btn-warning">Modificar</button></td>
             <td><button class="btn btn-danger" data-id="{{this.id}}">Eliminar</button></td>
         </tr>
@@ -104,7 +106,7 @@ botonesEliminar.forEach(boton=>{
     boton.addEventListener("click", (event)=>{
           let id = boton.dataset.id
           let confirmacion = confirm("Esta seguro que deseas eliminar el registro con id:" + id)
-          
+
       if(!confirmacion){
         return false
       }
